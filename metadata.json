@@ -1,0 +1,7 @@
+{
+  "name": "AInvoker Admin",
+  "description": "Admin dashboard and system control plane for AInvoker inference traffic, users, models, and quotas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
