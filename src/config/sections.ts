@@ -46,7 +46,7 @@ export const sectionGroups: AdminSectionGroup[] = [
         icon: HiOutlineBuildingOffice2,
         title: 'Organizations',
         subtitle: 'Find any workspace, see its owner and plan, and suspend or reinstate it.',
-        live: false,
+        live: true,
       },
       {
         path: '/users',
@@ -54,7 +54,7 @@ export const sectionGroups: AdminSectionGroup[] = [
         icon: HiOutlineUsers,
         title: 'Users',
         subtitle: 'Look up people by email and see which workspaces they belong to.',
-        live: false,
+        live: true,
       },
     ],
   },

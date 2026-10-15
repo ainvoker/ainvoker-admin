@@ -7,13 +7,11 @@ import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
 import BusinessPage from './pages/business/BusinessPage';
 import ModelsPage from './pages/models/ModelsPage';
-import {
-  BillingStub,
-  OrganizationsStub,
-  SafetyStub,
-  UsageStub,
-  UsersStub,
-} from './pages/stubs/sectionStubs';
+import OrganizationsPage from './pages/customers/OrganizationsPage';
+import OrganizationDetailPage from './pages/customers/OrganizationDetailPage';
+import UsersPage from './pages/customers/UsersPage';
+import UserDetailPage from './pages/customers/UserDetailPage';
+import { BillingStub, SafetyStub, UsageStub } from './pages/stubs/sectionStubs';
 
 export default function App() {
   return (
@@ -32,8 +30,10 @@ export default function App() {
               <Route index element={<Navigate to="/models" replace />} />
               <Route path="models" element={<ModelsPage />} />
               <Route path="business" element={<BusinessPage />} />
-              <Route path="organizations" element={<OrganizationsStub />} />
-              <Route path="users" element={<UsersStub />} />
+              <Route path="organizations" element={<OrganizationsPage />} />
+              <Route path="organizations/:orgId" element={<OrganizationDetailPage />} />
+              <Route path="users" element={<UsersPage />} />
+              <Route path="users/:userId" element={<UserDetailPage />} />
               <Route path="billing" element={<BillingStub />} />
               <Route path="usage" element={<UsageStub />} />
               <Route path="safety" element={<SafetyStub />} />
