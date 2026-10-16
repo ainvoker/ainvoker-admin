@@ -18,7 +18,7 @@ import FinanceExpensesPage from './pages/finance/FinanceExpensesPage';
 import FinanceReconciliationPage from './pages/finance/FinanceReconciliationPage';
 import UsagePage from './pages/usage/UsagePage';
 import SafetyPage from './pages/safety/SafetyPage';
-import { DashboardStub } from './pages/stubs/sectionStubs';
+import DashboardPage from './pages/dashboard/DashboardPage';
 
 export default function App() {
   return (
@@ -34,7 +34,7 @@ export default function App() {
           </Route>
           <Route element={<PlatformAdminRoute />}>
             <Route element={<AdminLayout />}>
-              <Route index element={<DashboardStub />} />
+              <Route index element={<DashboardPage />} />
               <Route path="models" element={<ModelsPage />} />
               <Route path="business" element={<BusinessPage />} />
               <Route path="organizations" element={<OrganizationsPage />} />

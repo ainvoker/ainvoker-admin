@@ -1,18 +1,5 @@
 import { SectionStub } from './SectionStub';
 
-export const DashboardStub = () => (
-  <SectionStub
-    summary="Platform pulse after login — health, customer activity, a short money snapshot, and shortcuts into live sections."
-    capabilities={[
-      'Request volume and error rate across the platform.',
-      'Recent organizations and suspended workspace count.',
-      'Pro / Scale counts and cash collected this period.',
-      'Shortcuts to Organizations, Models, and Business.',
-    ]}
-    endpoints={['GET /api/v1/admin/dashboard']}
-  />
-);
-
 export const OrganizationsStub = () => (
   <SectionStub
     summary="Support starts here: find the workspace a customer is talking about and see its state at a glance."
