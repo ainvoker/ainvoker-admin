@@ -119,7 +119,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <nav key={group.label} className="flex flex-col gap-0.5" aria-label={group.label}>
               <p className="px-2 pb-1 text-[11px] font-medium text-neutral-400">{group.label}</p>
               {group.sections.map(({ path, label, icon: Icon, live }) => (
-                <NavLink key={path} to={path} onClick={onClose} className={linkClass}>
+                <NavLink
+                  key={path}
+                  to={path}
+                  end={path === '/'}
+                  onClick={onClose}
+                  className={linkClass}
+                >
                   <Icon className="size-4 shrink-0 opacity-70" aria-hidden />
                   <span className="flex-1 truncate">{label}</span>
                   {!live && (

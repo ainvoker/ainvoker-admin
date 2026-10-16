@@ -1,9 +1,15 @@
 import type { IconType } from 'react-icons';
 import {
+  HiOutlineArrowsRightLeft,
+  HiOutlineBanknotes,
   HiOutlineBuildingOffice2,
   HiOutlineChartBar,
+  HiOutlineChartPie,
+  HiOutlineClipboardDocumentList,
   HiOutlineCpuChip,
   HiOutlineCreditCard,
+  HiOutlineDocumentText,
+  HiOutlineHome,
   HiOutlineShieldExclamation,
   HiOutlineUsers,
 } from 'react-icons/hi2';
@@ -24,6 +30,19 @@ export type AdminSectionGroup = {
 };
 
 export const sectionGroups: AdminSectionGroup[] = [
+  {
+    label: 'Home',
+    sections: [
+      {
+        path: '/',
+        label: 'Dashboard',
+        icon: HiOutlineHome,
+        title: 'Dashboard',
+        subtitle: 'Ops pulse — health, customers, and a short money snapshot.',
+        live: false,
+      },
+    ],
+  },
   {
     label: 'Catalog',
     sections: [
@@ -59,7 +78,7 @@ export const sectionGroups: AdminSectionGroup[] = [
     ],
   },
   {
-    label: 'Revenue',
+    label: 'Monetization',
     sections: [
       {
         path: '/business',
@@ -72,10 +91,39 @@ export const sectionGroups: AdminSectionGroup[] = [
       {
         path: '/billing',
         label: 'Billing',
-        icon: HiOutlineCreditCard,
+        icon: HiOutlineBanknotes,
         title: 'Billing',
         subtitle: 'Subscriptions, payments, and manual plan adjustments for support cases.',
-        live: false,
+        live: true,
+      },
+    ],
+  },
+  {
+    label: 'Finance',
+    sections: [
+      {
+        path: '/finance/overview',
+        label: 'Overview',
+        icon: HiOutlineChartPie,
+        title: 'Overview',
+        subtitle: 'Revenue, COGS, gross margin, and net profit by period.',
+        live: true,
+      },
+      {
+        path: '/finance/expenses',
+        label: 'Expenses',
+        icon: HiOutlineClipboardDocumentList,
+        title: 'Expenses',
+        subtitle: 'Operating costs: hosting, payment fees, tools, payroll.',
+        live: true,
+      },
+      {
+        path: '/finance/reconciliation',
+        label: 'Reconciliation',
+        icon: HiOutlineArrowsRightLeft,
+        title: 'Reconciliation',
+        subtitle: 'Match Xendit and provider invoices to internal records.',
+        live: true,
       },
     ],
   },
@@ -83,12 +131,20 @@ export const sectionGroups: AdminSectionGroup[] = [
     label: 'Operations',
     sections: [
       {
+        path: '/audit',
+        label: 'Audit log',
+        icon: HiOutlineDocumentText,
+        title: 'Audit log',
+        subtitle: 'Who changed workspaces, billing, catalog, and business settings.',
+        live: true,
+      },
+      {
         path: '/usage',
         label: 'Usage and requests',
         icon: HiOutlineChartBar,
         title: 'Usage and requests',
         subtitle: 'Platform-wide traffic, cost, and errors across every workspace.',
-        live: false,
+        live: true,
       },
       {
         path: '/safety',
@@ -96,7 +152,7 @@ export const sectionGroups: AdminSectionGroup[] = [
         icon: HiOutlineShieldExclamation,
         title: 'Safety',
         subtitle: 'Shut down abuse by revoking API keys or disabling projects.',
-        live: false,
+        live: true,
       },
     ],
   },

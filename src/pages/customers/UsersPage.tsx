@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import { useUsers } from '../../hooks/useCustomers';
 import { Badge } from '../../components/ui/Badge';
 import { TextInput } from '../../components/ui/Field';
+import { TABLE_PAGE_SIZE, TablePagination } from '../../components/ui/TablePagination';
 import { Button } from '../../components/common/Button';
 import { AdminPage } from '../../components/layout/AdminPage';
 import { formatPersonName } from './customersBadges';
@@ -13,18 +14,24 @@ const dateFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'nume
 export default function UsersPage() {
   const [search, setSearch] = useState('');
   const [submittedQ, setSubmittedQ] = useState('');
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    setOffset(0);
+  }, [submittedQ]);
 
   const filters = useMemo(
     () => ({
       q: submittedQ || undefined,
-      limit: 50,
-      offset: 0,
+      limit: TABLE_PAGE_SIZE,
+      offset,
     }),
-    [submittedQ],
+    [submittedQ, offset],
   );
 
   const usersQuery = useUsers(filters);
   const items = usersQuery.data?.items ?? [];
+  const total = usersQuery.data?.total ?? 0;
 
   return (
     <AdminPage>
@@ -141,6 +148,16 @@ export default function UsersPage() {
             </tbody>
           </table>
         </div>
+
+        {usersQuery.isSuccess && (
+          <TablePagination
+            total={total}
+            limit={TABLE_PAGE_SIZE}
+            offset={offset}
+            onOffsetChange={setOffset}
+            disabled={usersQuery.isFetching}
+          />
+        )}
       </div>
     </AdminPage>
   );

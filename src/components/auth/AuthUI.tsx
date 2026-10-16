@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import Mark from '../../assets/mark.svg';
 import AuthLayout from '../../layouts/AuthLayout';
 import AuthService from '../../services/AuthService';
@@ -30,6 +31,9 @@ type AuthFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
 /** Mirrors the client's InputGroup: the label sits inside the box and turns into the error message. */
 export const AuthField: React.FC<AuthFieldProps> = ({ label, error, id, className = '', ...props }) => {
   const inputId = id ?? props.name;
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = props.type === 'password';
+
   return (
     <div
       className={`overflow-hidden rounded-lg border transition-colors focus-within:border-gray-500 ${
@@ -42,14 +46,30 @@ export const AuthField: React.FC<AuthFieldProps> = ({ label, error, id, classNam
       >
         {error ?? label}
       </label>
-      <input
-        id={inputId}
-        aria-invalid={!!error || undefined}
-        className={`w-full bg-transparent px-4 pb-2 text-base outline-none placeholder:text-gray-400 ${
-          error ? 'text-red-500' : 'text-gray-700'
-        } ${className}`}
-        {...props}
-      />
+      <div className="flex items-center">
+        <input
+          id={inputId}
+          aria-invalid={!!error || undefined}
+          className={`peer min-w-0 flex-1 bg-transparent px-4 pb-2 text-base outline-none placeholder:text-gray-400 ${
+            error ? 'text-red-500' : 'text-gray-700'
+          } ${className}`}
+          {...props}
+          type={isPassword && showPassword ? 'text' : props.type}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            className={`mr-2 mb-2 grid size-8 shrink-0 place-items-center rounded-md transition-colors hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 peer-placeholder-shown:pointer-events-none peer-placeholder-shown:invisible ${
+              error ? 'text-red-500' : 'text-gray-500'
+            }`}
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
+            aria-pressed={showPassword}
+            onClick={() => setShowPassword((visible) => !visible)}
+          >
+            {showPassword ? <FiEyeOff aria-hidden="true" /> : <FiEye aria-hidden="true" />}
+          </button>
+        )}
+      </div>
     </div>
   );
 };

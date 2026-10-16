@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiOutlineMagnifyingGlass } from 'react-icons/hi2';
 import { useOrganizations } from '../../hooks/useCustomers';
@@ -6,6 +6,7 @@ import type { OrganizationStatus } from '../../services/AdminCustomersService';
 import { Badge } from '../../components/ui/Badge';
 import { Select } from '../../components/ui/Select';
 import { TextInput } from '../../components/ui/Field';
+import { TABLE_PAGE_SIZE, TablePagination } from '../../components/ui/TablePagination';
 import { Button } from '../../components/common/Button';
 import { AdminPage } from '../../components/layout/AdminPage';
 import { formatPersonName, orgStatusLabel, orgStatusTone, subscriptionStatusTone } from './customersBadges';
@@ -16,19 +17,25 @@ export default function OrganizationsPage() {
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState<OrganizationStatus | ''>('');
   const [submittedQ, setSubmittedQ] = useState('');
+  const [offset, setOffset] = useState(0);
+
+  useEffect(() => {
+    setOffset(0);
+  }, [submittedQ, status]);
 
   const filters = useMemo(
     () => ({
       q: submittedQ || undefined,
       status: status || undefined,
-      limit: 50,
-      offset: 0,
+      limit: TABLE_PAGE_SIZE,
+      offset,
     }),
-    [submittedQ, status],
+    [submittedQ, status, offset],
   );
 
   const orgsQuery = useOrganizations(filters);
   const items = orgsQuery.data?.items ?? [];
+  const total = orgsQuery.data?.total ?? 0;
   const hasFilters = !!(submittedQ || status);
 
   return (
@@ -58,7 +65,10 @@ export default function OrganizationsPage() {
             aria-label="Filter by status"
             className="w-36"
             value={status}
-            onChange={(e) => setStatus((e.target.value || '') as OrganizationStatus | '')}
+            onChange={(e) => {
+              setStatus((e.target.value || '') as OrganizationStatus | '');
+              setOffset(0);
+            }}
           >
             <option value="">All statuses</option>
             <option value="ACTIVE">Active</option>
@@ -182,6 +192,16 @@ export default function OrganizationsPage() {
             </tbody>
           </table>
         </div>
+
+        {orgsQuery.isSuccess && (
+          <TablePagination
+            total={total}
+            limit={TABLE_PAGE_SIZE}
+            offset={offset}
+            onOffsetChange={setOffset}
+            disabled={orgsQuery.isFetching}
+          />
+        )}
       </div>
     </AdminPage>
   );
