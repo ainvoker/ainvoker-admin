@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signupSchema, type SignupFormValues } from '../types/authSchemas';
 import AuthService from '../services/AuthService';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,8 +9,18 @@ import { AuthField, AuthShell, OAuthButtons, OrDivider } from '../components/aut
 import { Button } from '../components/common/Button';
 import { CLIENT_URL } from '../utils/auth';
 
+function signupHasSession(data: unknown): boolean {
+  return Boolean(
+    data &&
+      typeof data === 'object' &&
+      'session' in data &&
+      (data as { session?: unknown }).session,
+  );
+}
+
 export default function Signup() {
-  const { refresh } = useAuth();
+  const navigate = useNavigate();
+  const { refresh, setAuth } = useAuth();
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const { register, handleSubmit, formState, setError } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -21,7 +31,7 @@ export default function Signup() {
   const onSubmit: SubmitHandler<SignupFormValues> = async ({ name, email, password }) => {
     const [data, err] = await AuthService.signup({ name, email, password });
 
-    if (!data && err) {
+    if (err && err !== 'Email verification required') {
       setError('email', {
         type: 'server',
         message: err.startsWith('User already exists.') ? 'User already exists.' : err,
@@ -29,7 +39,21 @@ export default function Signup() {
       return;
     }
 
-    await refresh();
+    if (signupHasSession(data)) {
+      await refresh();
+      return;
+    }
+
+    // Neon blocks a session until the email is verified — do not refresh (clears the stub).
+    setAuth({
+      id: '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      email,
+      emailVerified: false,
+      name: '',
+    });
+    navigate('/verify-email', { replace: true });
   };
 
   return (
